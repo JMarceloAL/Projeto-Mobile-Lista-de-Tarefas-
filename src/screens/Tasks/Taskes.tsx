@@ -1,40 +1,46 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { Button, Text, View, TouchableOpacity } from "react-native";
-import styles from "../../styles/styles";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { saveData, buscaData, clearAsyncStorage } from '../../AsyncStorage/storage';
-
+import { useNavigation } from "@react-navigation/native"; // Importação para navegação entre telas (não utilizada neste componente)
+import React, { useEffect, useState } from "react"; // Importações do React e hooks
+import { Button, Text, View, TouchableOpacity } from "react-native"; // Componentes do React Native
+import styles from "../../styles/styles"; // Importação de estilos personalizados
+import { FlatList, TextInput } from "react-native-gesture-handler"; // Componentes para lista e entrada de texto
+import AntDesign from '@expo/vector-icons/AntDesign'; // Biblioteca de ícones
+import { saveData, buscaData } from '../../AsyncStorage/storage'; // Funções personalizadas para armazenamento de dados
+import Ionicons from '@expo/vector-icons/Ionicons';
 export function Taskes() {
+    // Estado para armazenar a lista de tarefas
     const [list, setList] = useState([]);
+    
+    // Estado para controlar o texto da nova tarefa
     const [task, setTask] = useState("");
     
-    
-    // Carregar dados quando o componente montar
+    // Hook de efeito para carregar dados quando o componente é montado
     useEffect(() => {
         loadData();
-    }, []);
+    }, []); // Array vazio significa que será executado apenas uma vez na montagem
 
-    // Nova função para carregar dados usando a função importada
+    // Função assíncrona para carregar dados do armazenamento
     const loadData = async () => {
-        const data = await buscaData();
-        setList(data);
+        const data = await buscaData(); // Busca dados salvos anteriormente
+        setList(data); // Atualiza o estado da lista com os dados carregados
     };
 
+    // Função para marcar/desmarcar tarefa como concluída
     const toggleCheckbox = (id) => {
+        // Cria nova lista com o estado de conclusão da tarefa alternado
         const newList = list.map(item => {
             if (item.id === id) {
                 return { ...item, completed: !item.completed };
             }
             return item;
         });
-        setList(newList);
-        saveData(newList);
+        setList(newList); // Atualiza o estado da lista
+        saveData(newList); // Salva a nova lista no armazenamento
     };
 
+    // Componente para renderizar cada item da lista
     const Item = ({ item }) => (
         <View style={styles.item}>
+            {/* Botão de checkbox para marcar tarefa como concluída */}
             <TouchableOpacity 
                 style={styles.checkbox}
                 onPress={() => toggleCheckbox(item.id)}
@@ -46,69 +52,97 @@ export function Taskes() {
                     {item.completed && <Text style={styles.checkMark}>✓</Text>}
                 </View>
             </TouchableOpacity>
+
+            {/* Texto da tarefa com estilo condicional para tarefas concluídas */}
             <Text style={[
                 styles.title,
                 item.completed && styles.completedTask
             ]}>
                 {item.title}
             </Text>
-            <View style={styles.buttonexcluir}>
-                <AntDesign  name ="delete" size={24}
-                    color="grey" 
-                    onPress={() => {
-                        const newList = list.filter(listItem => listItem.id !== item.id);
-                        setList(newList);
-                        saveData(newList);
-                    }}>
-                    
-                    </AntDesign>
+
+            {/* Botão para excluir tarefa */}
+            <View style={{}}>
                 
+                <TouchableOpacity onPress={()=> {
+                    // Filtra a lista removendo o item com o ID correspondente
+                    const newList = list.filter(listItem => listItem.id !== item.id);
+                    setList(newList); // Atualiza o estado da lista
+                    saveData(newList); // Salva a nova lista no armazenamento
+                }} >
+
+                <Ionicons name="trash-sharp" size={30} color="black" style={{ }} 
+                      
+                 />  
+                </TouchableOpacity>
+              
             </View>
         </View>
     );
       
+    // Função para adicionar nova tarefa
     const addTask = () => {
         if (task !== "") {
-            const newList = [...list, {id: Date.now(), title: task, completed: false}];
-            setList(newList);
-            setTask("");
-            saveData(newList);
+            // Cria nova lista com a tarefa adicionada
+            const newList = [...list, {
+                id: Date.now(), // Usa timestamp como ID único
+                title: task, 
+                completed: false
+            }];
+            setList(newList); // Atualiza o estado da lista
+            setTask(""); // Limpa o campo de entrada
+            saveData(newList); // Salva a nova lista no armazenamento
         }
     }
     
-    
+    // Renderização do componente
     return (
-        <View style={{ flex: 1 , alignItems:"center" , backgroundColor: "#f0eded"}}>
-           
-            
-            <View  style = {{display : "flex" , flexDirection : "row" , marginVertical: 20 , alignItems: "center" ,  backgroundColor: "white" , borderRadius: 50, borderColor: "grey" , marginTop: 50}}>
+        <View style={{ flex: 1, alignItems: "center", backgroundColor: "#f0eded"}}>
+            {/* Container para entrada de nova tarefa */}
+            <View style={{
+                display: "flex", 
+                flexDirection: "row", 
+                marginVertical: 20, 
+                alignItems: "center", 
+                backgroundColor: "white", 
+                borderRadius: 50, 
+                borderColor: "grey", 
+                marginTop: 50
+            }}>
+                {/* Campo de entrada de texto para nova tarefa */}
                 <TextInput
-                    onChangeText={(txt) => setTask(txt)}
+                    maxLength={20} // Limite de 20 caracteres
+                    onChangeText={(txt) => setTask(txt)} // Atualiza estado da tarefa
                     placeholder="escreva sua tarefa"
-                    value={task}
+                    value={task} // Valor controlado pelo estado
                     style={{
+                        fontSize: 18,
                         padding: 20,
-                        height:60,
-                        width:250,
-                        
-                    }}>   
-                    </TextInput>
-                    <AntDesign name="pluscircle" size={30} color= "red" onPress={addTask} style={{marginRight:15}} >
+                        height: 60,
+                        width: 250,
+                    }}
+                />
+                {/* Botão para adicionar tarefa */}
+                <TouchableOpacity onPress={addTask}>
 
-
-
-            </AntDesign>
                 
+                <AntDesign 
+                    name="pluscircle" 
+                    size={30} 
+                    color="red" 
+                    style={{marginRight:15}} 
+                    />
+                    </TouchableOpacity>
             </View>
             
-            <View  style = {{ width:350}}>
+            {/* Lista de tarefas */}
+            <View style={{ width:350}}>
                 <FlatList 
-                    data={list}  
-                    renderItem={({ item }) => <Item item={item} />}
-                    keyExtractor={item => item.id.toString()}
+                    data={list} // Dados da lista de tarefas
+                    renderItem={({ item }) => <Item item={item} />} // Componente de renderização
+                    keyExtractor={item => item.id.toString()} // Chave única para cada item
                 />
             </View>
-           
         </View>
     );
 };
