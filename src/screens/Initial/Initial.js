@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import styles from '../../screens/Initial/initialStyles';
 
 export function Initial({ navigation }) {
     // Estado para controlar o carregamento
@@ -43,62 +43,36 @@ export function Initial({ navigation }) {
             }
         };
         checkFirstLaunch();
-
     }, []);
-
-
 
     // Se estiver carregando, exibe o ActivityIndicator
     if (isLoading) {
         return (
-            <View style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
+            <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
                     color="black"
-                    style={{
-                        transform: [{ scaleX: 2 },
-                        { scaleY: 2 }]
-                    }}
+                    style={styles.loadingIndicator}
                 />
             </View>
         );
     }
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', marginTop: 200 }}>
-            <View style={{
-                width: 300,
-                height: 320,
-                backgroundColor: "white",
-                alignContent: 'center',
-                borderRadius: 30,
-                padding: 20
-            }}>
-                <Text style={{ fontSize: 20, textAlign: 'justify' }}>
+        <View style={styles.container}>
+            <View style={styles.infoCard}>
+                <Text style={styles.infoText}>
                     Nesse aplicativo Você pode organizar suas tarefas, fazer anotações e consultar o clima de sua região. O App contém 3 telas de navegação; Referentes as atividades que o aplicativo realiza. Foi desevolvido para te ajudar em suas atividades rotineiras. Faça um bom uso!
                 </Text>
             </View>
-            <View style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-                width: 400,
-                height: 190,
-                marginTop: 160
-            }}>
-                <AntDesign
-                    name="right"
-                    size={50}
-                    color="black"
-                    onPress={() => {
-                        saveFirstLaunchStatus();
-
-                    }}
-                />
+            <View style={styles.navigationButtonContainer}>
+                <TouchableOpacity onPress={saveFirstLaunchStatus}>
+                    <AntDesign
+                        name="right"
+                        size={50}
+                        color="black"
+                    />
+                </TouchableOpacity>
             </View>
         </View>
     );

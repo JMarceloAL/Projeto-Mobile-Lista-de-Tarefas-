@@ -5,6 +5,11 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { styles } from '../../screens/Notes/notesStyles'; // Importando os estilos
+
+// Chave para armazenar as notas no AsyncStorage
+const STORAGE_KEY = '@notes_app:notes';
 
 export function Notes() {
     // Estados para gerenciar a lista de notas, título, conteúdo, modo de edição e item sendo editado
@@ -12,7 +17,45 @@ export function Notes() {
     const [Notes, setNotes] = useState("");
     const [Titulo, setTitulo] = useState("");
     const [isEditing, setIsEditing] = useState(false);
+    const [isView, setIsView] = useState(false);
+    const [currentViewItem, setCurrentViewItem] = useState(null);
     const [editingItemId, setEditingItemId] = useState(null);
+    const [visible, setVisible] = useState(false);
+
+    // Carrega as notas salvas quando o componente for montado
+    useEffect(() => {
+        loadNotes();
+    }, []);
+
+    // Função para carregar as notas do AsyncStorage
+    const loadNotes = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
+            if (jsonValue !== null) {
+                setLista(JSON.parse(jsonValue));
+            }
+        } catch (error) {
+            console.error('Erro ao carregar notas:', error);
+            Alert.alert(
+                "Erro",
+                "Não foi possível carregar suas anotações."
+            );
+        }
+    };
+
+    // Função para salvar as notas no AsyncStorage
+    const saveNotes = async (notesArray) => {
+        try {
+            const jsonValue = JSON.stringify(notesArray);
+            await AsyncStorage.setItem(STORAGE_KEY, jsonValue);
+        } catch (error) {
+            console.error('Erro ao salvar notas:', error);
+            Alert.alert(
+                "Erro",
+                "Não foi possível salvar suas anotações."
+            );
+        }
+    };
 
     const updateNotes = () => {
         // Atualiza uma nota existente se o conteúdo e título não estiverem vazios
@@ -26,6 +69,8 @@ export function Notes() {
 
             // Atualiza o estado com a nova lista
             setLista(updatedList);
+            // Salva as notas atualizadas no AsyncStorage
+            saveNotes(updatedList);
 
             // Redefine os estados de edição e campos de entrada
             setNotes("");
@@ -38,8 +83,8 @@ export function Notes() {
 
     const Item = ({ item }) => (
         // Componente que renderiza cada item da lista de notas
-        <View style={{ padding: 20, borderRadius: 30, marginVertical: 8, backgroundColor: "white", maxHeight: 150, flexDirection: "row-reverse", alignItems: "center" }} >
-            <View style={{}}>
+        <View style={styles.noteItem}>
+            <View style={styles.actionButtons}>
                 <TouchableOpacity onPress={() => {
                     // Ativa o modo de edição quando o botão de editar é pressionado
                     setIsEditing(true);
@@ -48,25 +93,30 @@ export function Notes() {
                     setNotes(item.title);
                     setVisible(true);
                 }}>
-                    <Foundation name="pencil" size={30} color="black" style={{ marginLeft: 5 }} />
+                    <Foundation name="pencil" size={30} color="black" style={styles.editButton} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => {
-                    // Remove a nota da lista
-                    const NewLista = Lista.filter(listItem => listItem.id !== item.id);
-                    setLista(NewLista);
-                }}>
-                    <Ionicons name="trash-sharp" size={30} color="black" style={{ marginTop: 10 }} onPress={() => deleteNote(item.id)} />
+                <TouchableOpacity onPress={() => deleteNote(item.id)}>
+                    <Ionicons name="trash-sharp" size={30} color="black" style={styles.deleteButton} />
                 </TouchableOpacity>
-            </View >
-            <TouchableOpacity onPress={() => { }}>
-                <View style={{ marginRight: 30, width: 200, maxHeight: 50, marginBottom: 30, backgroundColor: "" }}>
-                    <Text style={{ fontSize: 15 }}>Titulo:  {item.id}</Text>
-                    <Text>{item.title}</Text>
+            </View>
+            {/* Botão para visualizar o modal com as informações titulo e notes */}
+            <TouchableOpacity onPress={() => {
+                viewNoteDetails(item);
+            }}>
+                <View style={styles.noteContent}>
+                    <Text style={styles.noteTitle}>Titulo: {item.id}</Text>
+                    <Text numberOfLines={1} ellipsizeMode="tail">{item.title}</Text>
                 </View>
             </TouchableOpacity>
-        </View >
+        </View>
     );
+
+    // Função para visualizar os detalhes da nota
+    const viewNoteDetails = (item) => {
+        setCurrentViewItem(item);
+        setIsView(true);
+    };
 
     const deleteNote = (itemId) => {
         // Exibe um alerta de confirmação antes de excluir a nota
@@ -85,6 +135,8 @@ export function Notes() {
                         // Remove a nota da lista após confirmação
                         const NewLista = Lista.filter(listItem => listItem.id !== itemId);
                         setLista(NewLista);
+                        // Salva as notas atualizadas no AsyncStorage
+                        saveNotes(NewLista);
                     }
                 }
             ]
@@ -109,24 +161,46 @@ export function Notes() {
             }
 
             // Adiciona a nova nota à lista
-            const Newlista = [...Lista, { id: Titulo, title: Notes }]
+            const Newlista = [...Lista, { id: Titulo, title: Notes }];
             setLista(Newlista);
+            // Salva as notas atualizadas no AsyncStorage
+            saveNotes(Newlista);
             setNotes("");
             setTitulo("");
         }
     };
 
-    // Estado para controlar a visibilidade do modal
-    const [visible, setVisible] = useState(false);
-
     return (
-        <View style={{ flex: 1, alignItems: "center", backgroundColor: '#f0eded' }}>
-            {/* Modal para adicionar e editar notas */}
-            <Modal animationType="fade" visible={visible} style={{ backgroundColor: "#f0eded" }}>
-                <View style={{ alignItems: "flex-end", backgroundColor: "#f0eded" }}>
-                    {/* Botão para fechar o modal */}
-                    <TouchableOpacity style={{ marginRight: 20 }} onPress={() => {
+        <View style={styles.container}>
 
+            {/* Modal para visualizar detalhes da nota */}
+            <Modal visible={isView} animationType="fade">
+                <View style={styles.modalContainer}>
+                    <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={() => setIsView(false)}>
+                        <FontAwesome name="remove" size={40} color="black" />
+                    </TouchableOpacity>
+                    <View style={styles.viewNoteContent}>
+                        {currentViewItem && (
+                            <>
+                                <Text style={styles.viewNoteTitle}>
+                                    {currentViewItem.id}
+                                </Text>
+                                <Text style={styles.viewNoteText}>
+                                    {currentViewItem.title}
+                                </Text>
+                            </>
+                        )}
+                    </View>
+                </View>
+            </Modal>
+
+            {/* Modal para adicionar e editar notas */}
+            <Modal animationType="fade" visible={visible}>
+                <View style={styles.headerButtons}>
+                    {/* Botão para fechar o modal */}
+                    <TouchableOpacity style={styles.headerCloseButton} onPress={() => {
                         setVisible(false);
                         // Redefine os estados quando o modal é fechado
                         setIsEditing(false);
@@ -134,33 +208,27 @@ export function Notes() {
                         setNotes("");
                         setTitulo("");
                     }}>
-
-
-                        <FontAwesome name="remove" size={40} color="black"
-
-                            style={{}} />
+                        <FontAwesome name="remove" size={40} color="black" />
                     </TouchableOpacity>
                 </View>
-                <View style={{ alignItems: "flex-start", width: 100, position: "absolute", marginLeft: 10 }} >
+                <View style={styles.saveButtonContainer}>
                     {/* Botão para salvar nota */}
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity style={styles.saveButton} onPress={() => {
                         // Determina se deve adicionar ou atualizar com base no estado de edição
-                        isEditing ? updateNotes() : addNotes(); setVisible(false);
-
+                        isEditing ? updateNotes() : addNotes();
+                        setVisible(false);
                     }}>
-
-                        <Feather name="save" size={40} color="black" style={{}}
-                        />
+                        <Feather name="save" size={40} color="black" />
                     </TouchableOpacity>
                 </View>
-                <View style={{ flex: 1, backgroundColor: '#f0eded' }}>
+                <View style={styles.modalContainer}>
                     {/* Input para o título da nota */}
                     <TextInput
                         onChangeText={(txt) => setTitulo(txt)}
                         value={Titulo}
                         maxLength={30}
                         placeholder="Titulo"
-                        style={{ backgroundColor: 'white', fontSize: 20, marginLeft: 20, marginRight: 20, borderRadius: 20, padding: 20, marginTop: 10 }}
+                        style={styles.titleInput}
                     />
                     {/* Input para o conteúdo da nota */}
                     <TextInput
@@ -171,33 +239,37 @@ export function Notes() {
                         multiline={true}
                         numberOfLines={29}
                         maxLength={850}
-                        style={{ backgroundColor: 'white', fontSize: 16, height: 710, padding: 20, margin: 20, borderRadius: 30 }}
+                        style={styles.contentInput}
                     />
                 </View>
-            </Modal >
+            </Modal>
 
             {/* Botão para adicionar nova nota */}
-            < TouchableOpacity onPress={() => {
+            <TouchableOpacity onPress={() => {
                 setVisible(true);
                 // Redefine os estados ao adicionar uma nova nota
                 setIsEditing(false);
                 setEditingItemId(null);
                 setNotes("");
                 setTitulo("");
-            }
-            }>
-                <MaterialCommunityIcons name="note-plus-outline" size={50} color="black" style={{ marginTop: 30 }} />
-            </TouchableOpacity >
+            }}>
+                <MaterialCommunityIcons
+                    name="note-plus-outline"
+                    size={50}
+                    color="black"
+                    style={styles.addButton}
+                />
+            </TouchableOpacity>
 
             {/* Lista de notas */}
-            < View style={{ width: 300, height: 600, marginTop: 30 }} >
+            <View style={styles.notesList}>
                 <FlatList
                     data={Lista}
                     renderItem={({ item }) => <Item item={item} />}
                     keyExtractor={item => item.id.toString()}
                 />
-            </View >
-        </View >
+            </View>
+        </View>
     );
 };
 

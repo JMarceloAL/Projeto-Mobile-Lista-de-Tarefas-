@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList, DrawerView } from '@react-navigation/drawer'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from "@react-navigation/native"
 import CustomDrawer from '../routes/CustomDrawer'
 import { Taskes } from '../screens/Tasks/Taskes.tsx'
@@ -23,12 +23,12 @@ export function AppRoutes() {
         <NavigationContainer >
 
 
-            <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />} initialRouteName='Clima' screenOptions={{ drawerActiveTintColor: 'red', drawerLabelStyle: { fontSize: 20 } }} >
+            <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />} initialRouteName='Info' screenOptions={{ drawerActiveTintColor: 'red', drawerLabelStyle: { fontSize: 20 } }} >
 
                 <Drawer.Screen name="Tarefas" component={Taskes} />
                 <Drawer.Screen name="Anotações" component={Notes} />
                 <Drawer.Screen name="Clima" component={Weather} />
-                <Drawer.Screen name="Info" component={Initial} options={{ drawerItemStyle: { display: '' }, headerShown: false }} />
+                <Drawer.Screen name="Info" component={Initial} options={{ drawerItemStyle: { display: 'none' }, headerShown: false }} />
 
 
             </Drawer.Navigator>
