@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StatusBar, Text, TextInput, TouchableOpacity, View, Alert } from "react-native";
+import { ActivityIndicator, StatusBar, Text, TextInput, TouchableOpacity, View, Alert, ImageBackground } from "react-native";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -81,6 +81,14 @@ export function Weather() {
 
     return (
         <View style={styles.container}>
+
+
+            <ImageBackground width={10000} style={{ width: '100%', height: '100%', position: 'absolute', zIndex: -1, marginTop: 200, }} resizeMode='contain' source={require('../../../assets/img3.webp')}>
+
+            </ImageBackground>
+
+
+
             <StatusBar />
 
             <View style={styles.searchContainer}>
@@ -94,7 +102,7 @@ export function Weather() {
                     style={styles.searchInput}
                 />
                 {loading ? (
-                    <ActivityIndicator color="grey" size={24} style={{ padding: 10 }} />
+                    <ActivityIndicator color="#6b73c7" size={24} style={{ padding: 10 }} />
                 ) : (
                     <TouchableOpacity style={styles.searchButton} onPress={() => {
                         if (city != "") {
@@ -105,7 +113,7 @@ export function Weather() {
                         <FontAwesome5
                             name="search-location"
                             size={24}
-                            color="black"
+                            color="#6b73c7"
                         />
                     </TouchableOpacity>
                 )}
@@ -113,42 +121,48 @@ export function Weather() {
 
             {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
 
-            {isOfflineData && !errorMessage && (
-                <Text style={styles.offlineText}>
-                    Dados carregados desde a última sessão
-                </Text>
-            )}
+            {
+                isOfflineData && !errorMessage && (
+                    <Text style={styles.offlineText}>
+                        Dados carregados desde a última sessão
+                    </Text>
+                )
+            }
 
-            {loading ? (
-                <ActivityIndicator
-                    color="grey"
-                    size="large"
-                    style={styles.loader}
-                />
-            ) : weatherData && (
-                <>
-                    <View style={styles.weatherCard}>
-                        <Text style={styles.cityName}>{weatherData.name}</Text>
+            {
+                loading ? (
+                    <ActivityIndicator
+                        color="#6b73c7"
+                        size="large"
+                        style={styles.loader}
+                    />
+                ) : weatherData && (
+                    <>
+                        <View style={styles.weatherCard}>
+                            <Text style={styles.cityName}>{weatherData.name}</Text>
 
-                        <Entypo name="icloud" size={50} color="black" style={styles.weatherIcon} />
+                            <Entypo name="icloud" size={50} color="#6b73c7" style={styles.weatherIcon} />
 
-                        <Text style={styles.weatherDescription}>{weatherData.weather[0].description}</Text>
+                            <Text style={styles.weatherDescription}>{weatherData.weather[0].description}</Text>
 
-                        <View style={styles.temperatureIcon}>
-                            <FontAwesome6 name="temperature-high" size={35} color="black" />
+                            <View style={styles.temperatureIcon}>
+                                <FontAwesome6 name="temperature-high" size={35} color="#ff5029" />
+                            </View>
+
+                            <Text style={styles.temperature}>{weatherData.main.temp}</Text>
+
+                            {weatherData.timestamp && (
+                                <Text style={styles.updateTimestamp}>
+                                    Atualizado em: {new Date(weatherData.timestamp).toLocaleString()}
+                                </Text>
+                            )}
                         </View>
+                    </>
+                )
+            }
 
-                        <Text style={styles.temperature}>{weatherData.main.temp}</Text>
 
-                        {weatherData.timestamp && (
-                            <Text style={styles.updateTimestamp}>
-                                Atualizado em: {new Date(weatherData.timestamp).toLocaleString()}
-                            </Text>
-                        )}
-                    </View>
-                </>
-            )}
-        </View>
+        </View >
     );
 }
 

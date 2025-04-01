@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Button, Text, View, TouchableOpacity } from "react-native";
+import { Button, Text, View, TouchableOpacity, Image, ImageBackground } from "react-native";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -31,6 +31,18 @@ export function Taskes() {
         saveData(newList);
     };
 
+    // Função para formatar a data e hora
+    const formatDateTime = () => {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        
+        return `${day}/${month}/${year} às ${hours}:${minutes}`;
+    };
+
     const Item = ({ item }) => (
         <View style={styles.item}>
             <TouchableOpacity 
@@ -45,12 +57,20 @@ export function Taskes() {
                 </View>
             </TouchableOpacity>
 
-            <Text style={[
-                styles.title,
-                item.completed && styles.completedTask
-            ]}>
-                {item.title}
-            </Text>
+            <View style={styles.taskContent}>
+                <Text style={[
+                    styles.title,
+                    item.completed && styles.completedTask
+                ]}>
+                    {item.title}
+                </Text>
+                
+                {item.dateTime && (
+                    <Text style={styles.dateTime}>
+                        {item.dateTime}
+                    </Text>
+                )}
+            </View>
 
             <View style={styles.deleteButton}>
                 <TouchableOpacity onPress={() => {
@@ -58,7 +78,7 @@ export function Taskes() {
                     setList(newList);
                     saveData(newList);
                 }}>
-                    <Ionicons name="trash-sharp" size={30} color="black" />  
+                    <Ionicons name="trash-sharp" size={30} color="#6b73c7" />  
                 </TouchableOpacity>
             </View>
         </View>
@@ -66,10 +86,14 @@ export function Taskes() {
       
     const addTask = () => {
         if (task !== "") {
+            // Obtém a data e hora atual formatada
+            const currentDateTime = formatDateTime();
+            
             const newList = [...list, {
                 id: Date.now(),
                 title: task, 
-                completed: false
+                completed: false,
+                dateTime: currentDateTime // Adiciona a data e hora à tarefa
             }];
             setList(newList);
             setTask("");
@@ -79,6 +103,8 @@ export function Taskes() {
     
     return (
         <View style={styles.container}>
+
+        
             <View style={styles.inputContainer}>
                 <TextInput
                     maxLength={20}
@@ -91,7 +117,7 @@ export function Taskes() {
                     <AntDesign 
                         name="pluscircle" 
                         size={30} 
-                        color="red" 
+                        color="#6b73c7" 
                         style={styles.addButton} 
                     />
                 </TouchableOpacity>
@@ -104,6 +130,13 @@ export function Taskes() {
                     keyExtractor={item => item.id.toString()}
                 />
             </View>
+
+            <ImageBackground  style={{width: 400, height: 600, position: 'absolute', zIndex: -1, marginTop: 150}} resizeMode ={"contain"} source={require('../../../assets/img1.png')}>
+
+            </ImageBackground>
+
+          
+
         </View>
     );
 };

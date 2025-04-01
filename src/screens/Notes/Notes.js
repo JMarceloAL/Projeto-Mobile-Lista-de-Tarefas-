@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, ImageBackground, Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Feather from '@expo/vector-icons/Feather';
@@ -93,11 +93,11 @@ export function Notes() {
                     setNotes(item.title);
                     setVisible(true);
                 }}>
-                    <Foundation name="pencil" size={30} color="black" style={styles.editButton} />
+                    <Foundation name="pencil" size={30} color="#ff5029" style={styles.editButton} />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => deleteNote(item.id)}>
-                    <Ionicons name="trash-sharp" size={30} color="black" style={styles.deleteButton} />
+                    <Ionicons name="trash-sharp" size={30} color="#6b73c7" style={styles.deleteButton} />
                 </TouchableOpacity>
             </View>
             {/* Botão para visualizar o modal com as informações titulo e notes */}
@@ -197,7 +197,7 @@ export function Notes() {
             </Modal>
 
             {/* Modal para adicionar e editar notas */}
-            <Modal animationType="fade" visible={visible}>
+            <Modal animationType="slide" visible={visible}>
                 <View style={styles.headerButtons}>
                     {/* Botão para fechar o modal */}
                     <TouchableOpacity style={styles.headerCloseButton} onPress={() => {
@@ -208,7 +208,7 @@ export function Notes() {
                         setNotes("");
                         setTitulo("");
                     }}>
-                        <FontAwesome name="remove" size={40} color="black" />
+                        <FontAwesome name="remove" size={40} color="#ff5029" />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.saveButtonContainer}>
@@ -218,7 +218,7 @@ export function Notes() {
                         isEditing ? updateNotes() : addNotes();
                         setVisible(false);
                     }}>
-                        <Feather name="save" size={40} color="black" />
+                        <Feather name="save" size={40} color="#6b73c7" />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.modalContainer}>
@@ -256,7 +256,7 @@ export function Notes() {
                 <MaterialCommunityIcons
                     name="note-plus-outline"
                     size={50}
-                    color="black"
+                    color="#6b73c7"
                     style={styles.addButton}
                 />
             </TouchableOpacity>
@@ -269,6 +269,9 @@ export function Notes() {
                     keyExtractor={item => item.id.toString()}
                 />
             </View>
+            <ImageBackground style={{ width: 400, height: 630, position: 'absolute', zIndex: -1, marginTop: 150 }} resizeMode={"contain"} source={require('../../../assets/img2.png')}>
+
+            </ImageBackground>
         </View>
     );
 };

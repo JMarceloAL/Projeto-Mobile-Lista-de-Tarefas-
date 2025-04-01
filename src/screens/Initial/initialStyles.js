@@ -4,12 +4,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 200
+        zIndex: -2,
+        backgroundColor: '#d4d5ff'
     },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+
     },
     loadingIndicator: {
         transform: [
@@ -23,7 +25,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         alignContent: 'center',
         borderRadius: 30,
-        padding: 20
+        padding: 20,
+        marginTop: 200
     },
     infoText: {
         fontSize: 20,

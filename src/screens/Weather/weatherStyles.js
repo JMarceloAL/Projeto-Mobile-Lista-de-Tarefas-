@@ -5,7 +5,8 @@ export const styles = StyleSheet.create({
         display: "flex",
         flex: 1,
         alignItems: "center",
-        backgroundColor: "#f0eded"
+        backgroundColor: "#d4d5ff",
+        zIndex: -2
     },
     searchContainer: {
         marginVertical: 20,
@@ -27,7 +28,7 @@ export const styles = StyleSheet.create({
         padding: 10
     },
     errorText: {
-        color: "red",
+        color: "#6b73c7",
         marginTop: 10
     },
     offlineText: {
@@ -49,14 +50,16 @@ export const styles = StyleSheet.create({
     },
     cityName: {
         fontSize: 40,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        color: '#6b73c7'
     },
     weatherIcon: {
         marginTop: 20
     },
     weatherDescription: {
         fontWeight: "700",
-        fontSize: 25
+        fontSize: 25,
+        color: '#6b73c7'
     },
     temperatureIcon: {
         marginLeft: 10,
@@ -64,7 +67,8 @@ export const styles = StyleSheet.create({
     },
     temperature: {
         fontWeight: "700",
-        fontSize: 25
+        fontSize: 25,
+        color: '#ff5029'
     },
     updateTimestamp: {
         fontSize: 14,

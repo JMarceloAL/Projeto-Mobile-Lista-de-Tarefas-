@@ -23,7 +23,7 @@ export function AppRoutes() {
         <NavigationContainer >
 
 
-            <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />} initialRouteName='Info' screenOptions={{ drawerActiveTintColor: 'red', drawerLabelStyle: { fontSize: 20 } }} >
+            <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />} initialRouteName='Info' screenOptions={{ drawerActiveTintColor: 'white', drawerActiveBackgroundColor: '#6b73c7', drawerLabelStyle: { fontSize: 20, }, drawerStyle: { backgroundColor: '#d4d5ff', }, headerStyle: { backgroundColor: '#d4d5ff', }, headerTintColor: '#6b73c7', headerTitleStyle: { color: '#6b73c7' } }} >
 
                 <Drawer.Screen name="Tarefas" component={Taskes} />
                 <Drawer.Screen name="Anotações" component={Notes} />

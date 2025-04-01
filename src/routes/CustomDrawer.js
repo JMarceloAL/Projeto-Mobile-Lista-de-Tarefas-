@@ -21,7 +21,7 @@ const CustomDrawer = (props) => {
                     clearAsyncStorage();
 
                 }}>
-                    <Foundation name="trash" size={50} color="black" />
+                    <Foundation name="trash" size={50} color="#6b73c7" />
 
                 </TouchableOpacity>
 

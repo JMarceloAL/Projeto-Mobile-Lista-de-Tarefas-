@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, ImageBackground } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../../screens/Initial/initialStyles';
@@ -51,7 +51,7 @@ export function Initial({ navigation }) {
             <View style={styles.loadingContainer}>
                 <ActivityIndicator
                     size="large"
-                    color="black"
+                    color="#6b73c7"
                     style={styles.loadingIndicator}
                 />
             </View>
@@ -60,6 +60,9 @@ export function Initial({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <ImageBackground width={10000} style={{ width: '100%', height: '100%', position: 'absolute', zIndex: -1, marginTop: 250, }} resizeMode='contain' source={require('../../../assets/img4.png')}>
+
+            </ImageBackground>
             <View style={styles.infoCard}>
                 <Text style={styles.infoText}>
                     Nesse aplicativo Você pode organizar suas tarefas, fazer anotações e consultar o clima de sua região. O App contém 3 telas de navegação; Referentes as atividades que o aplicativo realiza. Foi desevolvido para te ajudar em suas atividades rotineiras. Faça um bom uso!
@@ -70,7 +73,7 @@ export function Initial({ navigation }) {
                     <AntDesign
                         name="right"
                         size={50}
-                        color="black"
+                        color="#6b73c7"
                     />
                 </TouchableOpacity>
             </View>

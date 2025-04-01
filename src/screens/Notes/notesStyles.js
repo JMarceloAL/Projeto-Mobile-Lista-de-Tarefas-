@@ -4,7 +4,8 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: '#f0eded'
+        backgroundColor: '#d4d5ff',
+        zIndex: -2
     },
     addButton: {
         marginTop: 30
@@ -42,7 +43,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     modalContainer: {
-        backgroundColor: "#f0eded",
+        backgroundColor: '#d4d5ff',
         flex: 1
     },
     closeButton: {
@@ -68,7 +69,7 @@ export const styles = StyleSheet.create({
     },
     headerButtons: {
         alignItems: "flex-end",
-        backgroundColor: "#f0eded"
+        backgroundColor: '#d4d5ff'
     },
     headerCloseButton: {
         marginRight: 20,

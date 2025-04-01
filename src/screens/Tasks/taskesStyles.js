@@ -16,14 +16,14 @@ const styles = StyleSheet.create({
     checkboxBase: {
         width: 24,
         height: 24,
-        borderRadius: 4,
+        borderRadius: 15,
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: '#ff642b',
         alignItems: 'center',
         justifyContent: 'center',
     },
     checkboxChecked: {
-        backgroundColor: 'green',
+        backgroundColor: '#ff642b',
     },
     checkMark: {
         color: 'white',
@@ -42,7 +42,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#f0eded',
+        zIndex: -2,
+        backgroundColor: '#d4d5ff'
+
     },
     inputContainer: {
         display: 'flex',
@@ -68,6 +70,15 @@ const styles = StyleSheet.create({
     },
     deleteButton: {
         // Este está vazio no código original, mas pode ser adicionado se necessário
+    },
+    taskContent: {
+        flex: 1,
+        flexDirection: 'column',
+    },
+    dateTime: {
+        fontSize: 12,
+        color: '#666',
+        marginTop: 4,
     },
 });
 
