@@ -3,9 +3,11 @@ import { ActivityIndicator, StatusBar, Text, TextInput, TouchableOpacity, View, 
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
+import NetInfo from '@react-native-community/netinfo'; // Adicione esta importação
 import { fetchWeather } from '../../services/WeatherAPI';
-import { saveWeatherData, loadLastWeatherData } from '../../AsyncStorage/wetherstorage';
-import { styles } from '../../screens/Weather/weatherStyles'; // Importação do arquivo de estilos
+import { saveWeatherData, loadWeatherData, loadLastWeatherData } from '../../AsyncStorage/wetherstorage';
+import { styles } from '../../screens/Weather/weatherStyles';
+import { useNetworkStatus } from '../../services/internetConnect'; // Importe a função que criamos
 
 export function Weather() {
     const [city, setCity] = useState("");
@@ -13,6 +15,9 @@ export function Weather() {
     const [weatherData, setWeather] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [isOfflineData, setIsOfflineData] = useState(false);
+
+    // Use nosso hook personalizado para verificar a conexão
+    const isConnected = useNetworkStatus();
 
     // Carregar dados do AsyncStorage na inicialização
     useEffect(() => {
@@ -27,7 +32,7 @@ export function Weather() {
                     // Calculamos quanto tempo passou desde o último salvamento
                     const savedTime = new Date(savedData.timestamp);
                     const currentTime = new Date();
-                    const hoursDiff = Math.abs(currentTime - savedTime) / 36e5; // 36e5 é o número de milissegundos em uma hora
+                    const hoursDiff = Math.abs(currentTime - savedTime) / 36e5;
 
                     // Se os dados forem de mais de 1 hora atrás, avisamos o usuário
                     if (hoursDiff > 1) {
@@ -49,6 +54,24 @@ export function Weather() {
     }, []);
 
     const handleFetchWeather = async (cityName) => {
+        // Verificar conexão antes de tentar buscar dados
+        if (!isConnected) {
+            setErrorMessage("Falha na conexão com a internet");
+
+            // Tentar carregar dados offline
+            try {
+                const savedData = await loadWeatherData(cityName);
+                if (savedData) {
+                    setWeather(savedData);
+                    setIsOfflineData(true);
+                    setErrorMessage("Sem conexão com a internet. Usando dados salvos offline (podem estar desatualizados)");
+                }
+            } catch (storageError) {
+                console.error("Erro ao tentar carregar do storage:", storageError);
+            }
+            return;
+        }
+
         setLoading(true);
         setErrorMessage(null);
         setIsOfflineData(false);
@@ -81,15 +104,20 @@ export function Weather() {
 
     return (
         <View style={styles.container}>
-
-
-            <ImageBackground width={10000} style={{ width: '100%', height: '100%', position: 'absolute', zIndex: -1, marginTop: 200, }} resizeMode='contain' source={require('../../../assets/img3.webp')}>
-
-            </ImageBackground>
-
-
+            <ImageBackground
+                width={10000}
+                style={{ width: '100%', height: '100%', position: 'absolute', zIndex: -1, marginTop: 200 }}
+                resizeMode='contain'
+                source={require('../../../assets/img3.webp')}
+            />
 
             <StatusBar />
+
+            {!isConnected && (
+                <View style={styles.offlineBar}>
+                    <Text style={styles.offlineText}>Falha na conexão com a internet</Text>
+                </View>
+            )}
 
             <View style={styles.searchContainer}>
                 <TextInput
@@ -104,12 +132,15 @@ export function Weather() {
                 {loading ? (
                     <ActivityIndicator color="#6b73c7" size={24} style={{ padding: 10 }} />
                 ) : (
-                    <TouchableOpacity style={styles.searchButton} onPress={() => {
-                        if (city != "") {
-                            handleFetchWeather(city);
-                            setCity("");
-                        }
-                    }}>
+                    <TouchableOpacity
+                        style={styles.searchButton}
+                        onPress={() => {
+                            if (city != "") {
+                                handleFetchWeather(city);
+                                setCity("");
+                            }
+                        }}
+                    >
                         <FontAwesome5
                             name="search-location"
                             size={24}
@@ -121,48 +152,42 @@ export function Weather() {
 
             {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
 
-            {
-                isOfflineData && !errorMessage && (
-                    <Text style={styles.offlineText}>
-                        Dados carregados desde a última sessão
-                    </Text>
-                )
-            }
+            {isOfflineData && !errorMessage && (
+                <Text style={styles.offlineText}>
+                    Dados carregados desde a última sessão
+                </Text>
+            )}
 
-            {
-                loading ? (
-                    <ActivityIndicator
-                        color="#6b73c7"
-                        size="large"
-                        style={styles.loader}
-                    />
-                ) : weatherData && (
-                    <>
-                        <View style={styles.weatherCard}>
-                            <Text style={styles.cityName}>{weatherData.name}</Text>
+            {loading ? (
+                <ActivityIndicator
+                    color="#6b73c7"
+                    size="large"
+                    style={styles.loader}
+                />
+            ) : weatherData && (
+                <>
+                    <View style={styles.weatherCard}>
+                        <Text style={styles.cityName}>{weatherData.name}</Text>
 
-                            <Entypo name="icloud" size={50} color="#6b73c7" style={styles.weatherIcon} />
+                        <Entypo name="icloud" size={50} color="#6b73c7" style={styles.weatherIcon} />
 
-                            <Text style={styles.weatherDescription}>{weatherData.weather[0].description}</Text>
+                        <Text style={styles.weatherDescription}>{weatherData.weather[0].description}</Text>
 
-                            <View style={styles.temperatureIcon}>
-                                <FontAwesome6 name="temperature-high" size={35} color="#ff5029" />
-                            </View>
-
-                            <Text style={styles.temperature}>{weatherData.main.temp}</Text>
-
-                            {weatherData.timestamp && (
-                                <Text style={styles.updateTimestamp}>
-                                    Atualizado em: {new Date(weatherData.timestamp).toLocaleString()}
-                                </Text>
-                            )}
+                        <View style={styles.temperatureIcon}>
+                            <FontAwesome6 name="temperature-high" size={35} color="#ff5029" />
                         </View>
-                    </>
-                )
-            }
 
+                        <Text style={styles.temperature}>{weatherData.main.temp}</Text>
 
-        </View >
+                        {weatherData.timestamp && (
+                            <Text style={styles.updateTimestamp}>
+                                Atualizado em: {new Date(weatherData.timestamp).toLocaleString()}
+                            </Text>
+                        )}
+                    </View>
+                </>
+            )}
+        </View>
     );
 }
 

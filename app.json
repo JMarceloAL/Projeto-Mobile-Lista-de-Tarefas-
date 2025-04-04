@@ -15,14 +15,18 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+    
+      "android": {
+        "package": "com.yourcompany.yourapp"
       }
-    },
+    ,
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1fb1edef-e64e-4021-95f3-4d7d1095a9e6"
+      }
     }
   }
 }

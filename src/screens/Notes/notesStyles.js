@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     },
     notesList: {
         width: 300,
-        height: 600,
+        height: 640,
         marginTop: 30
     },
     noteItem: {

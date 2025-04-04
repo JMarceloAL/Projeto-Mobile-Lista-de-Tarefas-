@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Button, Text, View, TouchableOpacity, Image, ImageBackground } from "react-native";
+import { Button, Text, View, TouchableOpacity, Image, ImageBackground, ScrollView, VirtualizedList } from "react-native";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -124,11 +124,17 @@ export function Taskes() {
             </View>
             
             <View style={styles.listContainer}>
+                
+              
+                   
                 <FlatList 
                     data={list}
                     renderItem={({ item }) => <Item item={item} />}
                     keyExtractor={item => item.id.toString()}
-                />
+                    />
+                    
+                    
+                  
             </View>
 
             <ImageBackground  style={{width: 400, height: 600, position: 'absolute', zIndex: -1, marginTop: 150}} resizeMode ={"contain"} source={require('../../../assets/img1.png')}>

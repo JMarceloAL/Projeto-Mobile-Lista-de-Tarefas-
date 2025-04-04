@@ -66,7 +66,9 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     listContainer: {
-        width: 350,
+        width: 300,
+        height: 640,
+        
     },
     deleteButton: {
         // Este está vazio no código original, mas pode ser adicionado se necessário

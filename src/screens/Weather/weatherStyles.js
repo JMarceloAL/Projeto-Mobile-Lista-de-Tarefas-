@@ -74,5 +74,21 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         color: "gray",
         marginTop: 10
+    },
+    offlineText: {
+        color: '#FF8C00',
+        marginTop: 10,
+        textAlign: 'center',
+    },
+    offlineBar: {
+        backgroundColor: '#FF0000',
+        padding: 10,
+        width: '100%',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    offlineText: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
     }
 });
