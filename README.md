@@ -1,44 +1,45 @@
-#  Projeto Extensivo Estacio React Native Mobile Lista de Tarefas.
+# Projeto Extensivo Estacio React Native Mobile Lista de Tarefas
 
-
-# Sobre o projeto
-
-
-
-Oprojeto Foi Desenvolvido  no Trabalho Extensivo Da faculdade Estácio .
-
-Um aplicativo Mobile Android que faz  Organização de Tarefas como Check-list , anotações e consulta ao clima . consta com  3 telas referentes as ações que o aplicativo realiza.
+## Sobre o projeto
+O projeto foi desenvolvido no Trabalho Extensivo da faculdade Estácio.
+Um aplicativo Mobile Android que faz organização de tarefas como check-list, anotações e consulta ao clima. Consta com 3 telas referentes às ações que o aplicativo realiza.
 
 ## Telas do Aplicativo
-## Info
-![Info](https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Info.png)
-## Tela Inicial
-![inicial](https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Tarefas.png)
-## Menu 
-![menu](https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Menu.png)
-## Anotações
-![anotacoes](https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Anotacao.png)
-## clima
 
-![clima](https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Clima.png)
+### Info
+<img src="https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Info.png" width="300">
 
-# Tecnologias utilizadas
-## Back end
-- React-Native
-- Expo client
+### Tela Inicial
+<img src="https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Tarefas.png" width="300">
+
+### Menu 
+<img src="https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Menu.png" width="300">
+
+### Anotações
+<img src="https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Anotacao.png" width="300">
+
+### Clima
+<img src="https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-/blob/main/assets/Clima.png" width="300">
+
+## Tecnologias utilizadas
+
+### Back end
+- React Native
+- Expo Client
 - API
-## Front end
-- JavaScript
-- styles css
-# Como executar o projeto
-  É nescessario instalar o expo client no escopo do projeto  com o seguinte comando no terminal "npm install expo-cli" e inciando o projeto "npx expo start" caso for iniciar o projeto no seu computador se não "npx expo start --tunnel " para utilizar no aplicativo expo no celular android
-## Pré-requisitos: 
 
+### Front end
+- JavaScript
+- Styles CSS
+
+## Como executar o projeto
+É necessário instalar o Expo Client no escopo do projeto com o seguinte comando no terminal `npm install expo-cli` e iniciando o projeto `npx expo start`. Caso for iniciar o projeto no seu computador, se não `npx expo start --tunnel` para utilizar no aplicativo Expo no celular Android.
+
+### Pré-requisitos: 
 - Node.js
-- Expo client
+- Expo Client
 - Android Studio
 - Java JDK
 
-# Autor
-
-João Marcelo Araujo lima
+## Autor
+João Marcelo Araujo Lima
