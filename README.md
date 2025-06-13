@@ -25,6 +25,7 @@ Um aplicativo Mobile Android que faz organização de tarefas como check-list, a
 
 ### Back end
 - React Native
+- JavaScript
 - Expo Client
 - API
 
