@@ -41,7 +41,7 @@ Um aplicativo Mobile Android que faz organização de tarefas como check-list, a
 - Expo Client
 - Android Studio
 - Java JDK
-- 
+  
 ## Expo Apk Android
 
 https://expo.dev/accounts/jmarceloal/projects/lista-de-tarefas
