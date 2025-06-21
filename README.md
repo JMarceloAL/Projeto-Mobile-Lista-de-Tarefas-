@@ -34,6 +34,7 @@ Um aplicativo Mobile Android que faz organização de tarefas como check-list, a
 - Styles CSS
 
 ## Como executar o projeto
+- Clone o repositorio : git clone https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-.git
 É necessário instalar o Expo Client no escopo do projeto com o seguinte comando no terminal `npm install expo-cli` e iniciando o projeto `npx expo start`. Caso for iniciar o projeto no seu computador, se não `npx expo start --tunnel` para utilizar no aplicativo Expo no celular Android.
 
 ## Expo Apk Android
