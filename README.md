@@ -31,7 +31,6 @@ Um aplicativo Mobile Android que faz organização de tarefas como check-list, a
 
 ### Front end
 - JavaScript
-- Styles CSS
 
 ## Como executar o projeto
 - Clone o repositorio : git clone https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-.git
