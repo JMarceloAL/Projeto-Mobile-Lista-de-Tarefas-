@@ -27,7 +27,7 @@ Um aplicativo Mobile Android que faz organização de tarefas como check-list, a
 - React Native
 - JavaScript
 - Expo Client
-- API
+- API Rest
 
 ### Front end
 - JavaScript
@@ -35,17 +35,16 @@ Um aplicativo Mobile Android que faz organização de tarefas como check-list, a
 
 ## Como executar o projeto
 - Clone o repositorio : git clone https://github.com/JMarceloAL/Projeto-Mobile-Lista-de-Tarefas-.git
-É necessário instalar o Expo Client no escopo do projeto com o seguinte comando no terminal `npm install expo-cli` e iniciando o projeto `npx expo start`. Caso for iniciar o projeto no seu computador, se não `npx expo start --tunnel` para utilizar no aplicativo Expo no celular Android.
-
-## Expo Apk Android
-
-https://expo.dev/accounts/jmarceloal/projects/lista-de-tarefas
-
+- É necessário instalar o Expo Client no escopo do projeto com o seguinte comando no terminal `npm install expo-cli` e iniciando o projeto `npx expo start`. Caso for iniciar o projeto no seu computador, se não `npx expo start --tunnel` para utilizar no aplicativo Expo no celular Android.
 ### Pré-requisitos: 
 - Node.js
 - Expo Client
 - Android Studio
 - Java JDK
+- 
+## Expo Apk Android
+
+https://expo.dev/accounts/jmarceloal/projects/lista-de-tarefas
 
 ## Autor
 João Marcelo Araujo Lima
