@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-const API_KEY = "534db6d894b5546bbcf42d6d25f7cf11";
+const API_KEY = "sua_chave_api";
 
 export async function fetchWeather(city) {
     try {
